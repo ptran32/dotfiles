@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+readonly packages=(agents git ghostty herdr hunk nvim starship yazi zsh)
+
+fail() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+if [[ "${1:-}" == "--help" ]]; then
+  printf 'Usage: %s\n' "${0##*/}"
+  printf 'Installs the macOS Homebrew bundle and links the supported dotfiles.\n'
+  exit 0
+fi
+
+[[ $# -eq 0 ]] || fail "unknown argument: $1"
+[[ "$(uname -s)" == "Darwin" ]] || fail "this installer supports macOS only"
+command -v brew >/dev/null 2>&1 || fail "install Homebrew first: https://brew.sh/"
+
+brew bundle install --file "$repo_dir/homebrew/Brewfile"
+stow --restow --dir "$repo_dir" --target "$HOME" "${packages[@]}"
+
+printf 'Dotfiles installed. Open a new terminal window to load the shell configuration.\n'

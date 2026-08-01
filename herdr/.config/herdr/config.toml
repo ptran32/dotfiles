@@ -1,0 +1,114 @@
+# Managed by home-manager — https://herdr.dev/docs/configuration/
+onboarding = false
+
+[update]
+# Version is managed by Nix; skip background self-update prompts.
+version_check = false
+manifest_check = true
+
+[terminal]
+# "auto" uses login shells on macOS so PATH/Homebrew init runs in new panes.
+shell_mode = "auto"
+
+[theme]
+# Light: Rosé Pine Dawn. Dark: catppuccin (Herdr has no Frappé; closest to Neovim/Ghostty).
+# auto_switch tracks macOS Appearance without restarting panes.
+auto_switch = true
+name = "rose-pine-dawn"
+light_name = "rose-pine-dawn"
+dark_name = "catppuccin"
+
+# No [theme.custom] overrides: light surface0/surface1 values bled into dark mode
+# and made inactive tabs white-on-light-gray (unreadable).
+
+[ui]
+# Recover stale host-terminal surfaces after macOS Appearance changes.
+redraw_on_focus_gained = true
+
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", { token = "agent", bold = true, dim = false }],
+  ["workspace", { token = "$diff_added", fg = "#40a02b", bold = true }, { token = "$diff_deleted", fg = "#d20f39", bold = true }],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+codex = [
+  ["state_icon", { token = "agent", bold = true, dim = false }],
+  ["workspace", { token = "$diff_added", fg = "#40a02b", bold = true }, { token = "$diff_deleted", fg = "#d20f39", bold = true }],
+]
+
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", "workspace"],
+  ["branch", "git_status"],
+]
+
+[ui.toast]
+# In-app toasts (not macOS/terminal desktop notifications).
+delivery = "herdr"
+
+[experimental]
+kitty_graphics = true
+# macOS: switch to an ASCII input source while prefix mode is active so
+# punctuation like ; and ' registers (Canadian layout uses dead keys for ').
+switch_ascii_input_source_in_prefix = true
+
+[keys]
+# Match tmux-style C-Space prefix (default Herdr prefix is ctrl+b).
+prefix = "ctrl+space"
+
+# Pane focus: hjkl (default) and arrows both work after prefix.
+focus_pane_left = ["prefix+h", "prefix+left"]
+focus_pane_down = ["prefix+j", "prefix+down"]
+focus_pane_up = ["prefix+k", "prefix+up"]
+focus_pane_right = ["prefix+l", "prefix+right"]
+
+# Splits: _ side-by-side (left/right), - stacked (top/bottom).
+# Herdr names splits by divider orientation, not pane layout.
+split_vertical = "prefix+_"
+split_horizontal = "prefix+minus"
+zoom = "prefix+m"
+
+# Session
+detach = "prefix+d"
+
+# Workspaces and tabs
+new_workspace = "prefix+n"
+previous_workspace = "prefix+;"
+next_workspace = "prefix+'"
+previous_tab = "prefix+["
+next_tab = "prefix+]"
+# Default copy_mode is prefix+[; moved since [ is previous tab.
+copy_mode = "prefix+shift+["
+
+# Herdr Plus — https://github.com/cloudmanic/herdr-plus
+[[keys.command]]
+key = "prefix+shift+r"
+type = "shell"
+command = "herdr server reload-config"
+description = "Reload Herdr config (theme, keys)"
+
+[[keys.command]]
+key = "prefix+p"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.projects"
+description = "herdr-plus: projects"
+
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.quick-actions"
+description = "herdr-plus: quick actions"
+
+# herdr-file-viewer - https://github.com/smarzban/herdr-file-viewer
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+description = "herdr-file-viewer: split"
+
+[[keys.command]]
+key = "prefix+shift+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer-tab"
+description = "herdr-file-viewer: tab"

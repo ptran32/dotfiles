@@ -1,0 +1,27 @@
+.DS_Store
+/.codex/
+.gitconfig.local
+
+# macOS metadata
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Machine-local environment and credentials
+/.env
+/.env.*
+!/.env.example
+/.envrc
+/*.key
+/*.pem
+/*.p12
+/*.pfx
+
+# Editor and tool state
+/.direnv/
+/.idea/
+/.vscode/
+*.swp
+*.swo
+*~

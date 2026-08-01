@@ -1,0 +1,7 @@
+# Managed by home-manager — https://github.com/modem-dev/hunk
+
+theme = "monokai"
+mode = "split"
+agent_notes = true
+line_numbers = true
+menu_bar = true

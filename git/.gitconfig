@@ -1,0 +1,3 @@
+# Set identity in ~/.gitconfig.local, which is intentionally not tracked.
+[include]
+	path = ~/.gitconfig.local

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v herdr >/dev/null 2>&1; then
+  exit 0
+fi
+
+pane_id="${HERDR_PANE_ID:-}"
+if [ -z "$pane_id" ]; then
+  pane_id="$(herdr pane current --current 2>/dev/null || true)"
+  pane_id="${pane_id//[[:space:]]/}"
+fi
+if [ -z "$pane_id" ]; then
+  exit 0
+fi
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+  herdr pane report-metadata "$pane_id" \
+    --source bootstrap-laptop-nix:git-summary \
+    --clear-token summary \
+    --clear-token branch \
+    --clear-token diff_added \
+    --clear-token diff_deleted >/dev/null 2>&1 || true
+  exit 0
+}
+cd "$repo_root"
+
+sum_stats() {
+  git diff --numstat "$@" 2>/dev/null | awk '
+    $1 ~ /^[0-9]+$/ { add += $1 }
+    $2 ~ /^[0-9]+$/ { del += $2 }
+    END { printf "%d %d\n", add + 0, del + 0 }
+  '
+}
+
+read -r staged_add staged_del < <(sum_stats --cached || echo "0 0")
+read -r unstaged_add unstaged_del < <(sum_stats || echo "0 0")
+
+added=$((staged_add + unstaged_add))
+deleted=$((staged_del + unstaged_del))
+branch="$(git branch --show-current 2>/dev/null || true)"
+
+args=(
+  pane report-metadata "$pane_id"
+  --source bootstrap-laptop-nix:git-summary
+  --clear-token summary
+)
+
+if [ -n "$branch" ]; then
+  args+=(--token "branch=${branch}")
+else
+  args+=(--clear-token branch)
+fi
+
+if [ "$added" -gt 0 ]; then
+  args+=(--token "diff_added=+${added}")
+else
+  args+=(--clear-token diff_added)
+fi
+
+if [ "$deleted" -gt 0 ]; then
+  args+=(--token "diff_deleted=-${deleted}")
+else
+  args+=(--clear-token diff_deleted)
+fi
+
+herdr "${args[@]}" >/dev/null 2>&1 || true
