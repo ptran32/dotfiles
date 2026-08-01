@@ -37,7 +37,7 @@ return {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", config = config("treesitter") },
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", config = config("indent-blankline") },
   { "qvalentin/helm-ls.nvim", config = config("helm-ls") },
-  { "chrisgrieser/nvim-rip-substitute", config = config("rip-substitute") },
+  { "MagicDuck/grug-far.nvim", config = config("grug-far") },
   { "bennypowers/splitjoin.nvim", config = config("splitjoin") },
   { "michaelb/sniprun", build = "bash ./install.sh", config = config("sniprun") },
   { "nvzone/volt" },
