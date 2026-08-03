@@ -75,14 +75,14 @@ const vec4 TRAIL_COLOR = vec4(0.478, 0.514, 0.486, 0.38);        // #7a837c clif
 const vec4 TRAIL_COLOR_ACCENT = vec4(0.655, 0.847, 0.690, 0.28); // #a7d8b0 brand_of_sacrifice_green_1
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;
-const float DURATION = .2;
+const float DURATION = .12;
 const float OPACITY = .2;
 // Don't draw trail within that distance * cursor size.
 // This prevents trails from appearing when typing.
-const float DRAW_THRESHOLD = 1.5;
+const float DRAW_THRESHOLD = 2.5;
 // Don't draw trails within the same line: same line jumps are usually where
 // people expect them.
-const bool HIDE_TRAILS_ON_THE_SAME_LINE = false;
+const bool HIDE_TRAILS_ON_THE_SAME_LINE = true;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
@@ -111,7 +111,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
     vec4 newColor = vec4(fragColor);
 
-    float progress = blend(clamp((iTime - iTimeCursorChange) / DURATION, 0.0, 1));
+    float elapsed = iTime - iTimeCursorChange;
+    float progress = blend(clamp(elapsed / DURATION, 0.0, 1));
     float easedProgress = ease(progress);
 
     //Distance between cursors determine the total length of the parallelogram;
@@ -123,7 +124,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     //
     bool isFarEnough = lineLength > trailThreshold;
     bool isOnSeparateLine = HIDE_TRAILS_ON_THE_SAME_LINE ? currentCursor.y != previousCursor.y : true;
-    if (isFarEnough && isOnSeparateLine) {
+    if (isFarEnough && isOnSeparateLine && elapsed < DURATION) {
         float distanceToEnd = distance(vu.xy, centerCC);
         float alphaModifier = distanceToEnd / (lineLength * (easedProgress));
 
