@@ -1,6 +1,7 @@
 # Base tools and the command-line dependencies referenced by this dotfiles repo.
 tap "FelixKratz/formulae"
 
+brew "awscli"
 brew "bash-language-server"
 brew "bat"
 brew "borders" # JankyBorders
@@ -29,6 +30,8 @@ brew "stow"
 brew "terraform-ls"
 brew "tfenv"
 brew "tree-sitter"
+brew "uv"
+brew "vscode-langservers-extracted"
 brew "yazi"
 brew "yaml-language-server"
 brew "zoxide"

@@ -18,7 +18,6 @@ return {
   {
     "Aejkatappaja/sora",
     tag = "v1.4.0",
-    dependencies = { "rose-pine/neovim" },
     config = config("themes"),
   },
   { "nvim-lua/plenary.nvim" },
@@ -35,6 +34,11 @@ return {
   { "folke/flash.nvim", config = config("flash") },
   { "neovim/nvim-lspconfig", config = config("lsp") },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", config = config("treesitter") },
+  {
+    "selimacerbas/markdown-preview.nvim",
+    dependencies = { "selimacerbas/live-server.nvim" },
+    config = config("markdown-preview"),
+  },
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", config = config("indent-blankline") },
   { "qvalentin/helm-ls.nvim", config = config("helm-ls") },
   { "MagicDuck/grug-far.nvim", config = config("grug-far") },

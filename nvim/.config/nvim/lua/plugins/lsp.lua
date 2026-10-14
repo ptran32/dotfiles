@@ -2,6 +2,8 @@ vim.diagnostic.config({
   virtual_text = true,
 })
 
+vim.lsp.on_type_formatting.enable()
+
 vim.lsp.config("*", {
   capabilities = require("blink.cmp").get_lsp_capabilities(),
 })
@@ -13,7 +15,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover" }))
     vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "LSP Code Action" }))
     vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP Rename" }))
-    vim.keymap.set("n", "<leader>cf", function()
+    vim.keymap.set("n", "<leader>lf", function()
       vim.lsp.buf.format({ async = true })
     end, vim.tbl_extend("force", opts, { desc = "Format" }))
   end,
@@ -65,6 +67,16 @@ vim.lsp.config("yamlls", {
   },
 })
 
+vim.lsp.config("jsonls", {
+  settings = {
+    json = {
+      format = {
+        enable = true,
+      },
+    },
+  },
+})
+
 vim.lsp.config("helm_ls", {
   settings = {
     ["helm-ls"] = {
@@ -83,6 +95,6 @@ vim.lsp.config("helm_ls", {
   },
 })
 
-for _, server in ipairs({ "bashls", "dockerls", "helm_ls", "lua_ls", "pyright", "terraformls", "yamlls" }) do
+for _, server in ipairs({ "bashls", "dockerls", "helm_ls", "jsonls", "lua_ls", "pyright", "terraformls", "yamlls" }) do
   vim.lsp.enable(server)
 end
