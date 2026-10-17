@@ -45,7 +45,6 @@ alias kpo='kubectl get pod'
 alias d='docker'
 alias co='codex'
 alias cc='claude'
-alias oc='opencode'
 alias hd='hunk diff'
 alias src='exec zsh'
 
