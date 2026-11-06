@@ -2,7 +2,7 @@
 set -euo pipefail
 
 readonly repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-readonly packages=(agents git ghostty herdr hunk nvim starship yazi zsh)
+readonly packages=(git hunk nvim starship yazi zsh)
 
 fail() {
   printf 'error: %s\n' "$*" >&2

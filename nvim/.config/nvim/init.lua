@@ -19,3 +19,4 @@ require("lazy").setup(require("plugins"), {
 
 require("config.neovim")
 require("config.yaml-indent")
+require("config.cursor-agent")

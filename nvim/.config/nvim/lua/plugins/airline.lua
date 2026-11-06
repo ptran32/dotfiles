@@ -1,20 +1,9 @@
 -- https://github.com/vim-airline/vim-airline
 -- Classic Vim statusline (mode, branch + repo git status, file, location).
 -- Theme name is set in themes.lua (tracks light/dark).
---
--- Section B (after mode, before filename) — whole-repo status, not the open buffer:
---    main ↑1 ↓2 +1 ~3 ?2
---          │  │  │  │  │
---          │  │  │  │  └─ untracked files
---          │  │  │  └─ unstaged (worktree) files
---          │  │  └─ staged (index) files
---          │  └─ commits behind upstream
---          └─ commits ahead of upstream
--- Empty when the working tree is clean and branch is in sync.
 
 vim.g.airline_powerline_fonts = 1
 vim.g.airline_skip_empty_sections = 1
-
 vim.opt.laststatus = 3
 
 vim.g["airline#extensions#tabline#enabled"] = 0
@@ -26,7 +15,6 @@ vim.g["airline#extensions#wordcount#enabled"] = 0
 vim.g.airline_section_y = ""
 vim.g.airline_section_z = "%l/%L:%v"
 
--- Whole-repo git status (cached ~2s so statusline redraw stays cheap).
 vim.cmd([[
   let s:airline_gs_text = ''
   let s:airline_gs_time = 0

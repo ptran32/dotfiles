@@ -1,5 +1,12 @@
 -- General options (mirrors home/vimrc + former nvchad-extra.lua)
 
+-- Cursor rule files (.cursor/rules/*.mdc) are Markdown with YAML frontmatter.
+vim.filetype.add({
+  extension = {
+    mdc = "markdown",
+  },
+})
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -15,6 +22,11 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
+vim.opt.list = true
+vim.opt.listchars = {
+  trail = "·",
+  tab = "» ",
+}
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
@@ -30,7 +42,8 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.foldmethod = "indent"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldenable = true
 vim.opt.foldlevelstart = 99
 vim.opt.ignorecase = true
@@ -72,7 +85,26 @@ local function snacks_explorer_open()
 end
 
 local function save_buffer()
-  vim.cmd.write()
+  if vim.bo.buftype == "" then
+    vim.cmd.write()
+    return
+  end
+
+  -- CodeDiff keeps ours/theirs in virtual nofile buffers while the editable
+  -- merge result lives in a separate real-file buffer.
+  local ok, lifecycle = pcall(require, "codediff.ui.lifecycle")
+  if ok and lifecycle.get_session then
+    local session = lifecycle.get_session(vim.api.nvim_get_current_tabpage())
+    local result_bufnr = session and session.result_bufnr
+    if result_bufnr and vim.api.nvim_buf_is_valid(result_bufnr) then
+      vim.api.nvim_buf_call(result_bufnr, function()
+        vim.cmd.write()
+      end)
+      return
+    end
+  end
+
+  vim.notify("Current buffer cannot be written", vim.log.levels.WARN)
 end
 
 -- Avoid accidental macro @w (collides with <leader>w save). Other registers stay usable;
@@ -90,6 +122,7 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
 })
 
 vim.keymap.set("n", "<leader>w", save_buffer, { desc = "Save", silent = true })
+vim.keymap.set("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight", silent = true })
 -- No <leader> maps in insert mode: leader is Space, so each Space would wait
 -- timeoutlen (300ms) for a possible <leader>w / <leader><space> chord.
 vim.keymap.set({ "n", "i" }, "<C-s>", save_buffer, { desc = "Save", silent = true })
@@ -102,6 +135,7 @@ vim.keymap.set("n", "<leader>q", function()
     vim.cmd("qa")
   end
 end, { desc = "Quit window or all" })
+vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "Close tab", silent = true })
 vim.keymap.set("n", "<leader>Q", function()
   vim.cmd("qa!")
 end, { desc = "Force quit all" })

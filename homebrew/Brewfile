@@ -11,7 +11,6 @@ brew "fd"
 brew "fzf"
 brew "gh"
 brew "git"
-brew "glow" # Markdown rendering for Herdr File Viewer.
 brew "helm"
 brew "helm-ls"
 brew "jq"
@@ -38,7 +37,6 @@ brew "zoxide"
 brew "zsh"
 
 # Desktop applications with tracked configuration.
-cask "ghostty"
 cask "orbstack"
 cask "raycast"
 cask "nikitabobko/tap/aerospace"

@@ -22,7 +22,6 @@
   "nvim-treesitter": { "branch": "main", "commit": "0f32dff7f19476629c77467f887b95e5e2d33509" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
-  "sniprun": { "branch": "master", "commit": "647995168a0682b359dfbf49bd3b0e8b9f2026dc" },
   "sora": { "branch": "main", "commit": "83745fffb5d786c050c98e4747337d9e51272150" },
   "splitjoin.nvim": { "branch": "main", "commit": "f3aaf61e5126668cb081af3bdd889a40ad7058e7" },
   "tabout.nvim": { "branch": "master", "commit": "9a3499480a8e53dcaa665e2836f287e3b7764009" },

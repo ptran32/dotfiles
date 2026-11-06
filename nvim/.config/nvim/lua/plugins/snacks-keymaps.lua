@@ -1,10 +1,21 @@
 -- snacks.nvim keymaps — loaded after setup via plugin config block.
 local Snacks = require("snacks")
 
+local function project_root()
+  return vim.fs.root(0, {
+    ".git",
+    "flake.nix",
+    "package.json",
+    "pyproject.toml",
+    "go.mod",
+    "Cargo.toml",
+  }) or vim.fn.getcwd()
+end
+
 local keymaps = {
   { "<leader>sf", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
   { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-  { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
+  { "<leader>/", function() Snacks.picker.grep({ cwd = project_root() }) end, desc = "Grep project" },
   { "<leader>p", function() Snacks.terminal.focus(nil, { win = { position = "float", enter = true } }) end, desc = "Toggle Terminal", mode = { "n", "t" } },
   { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
   { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
@@ -29,8 +40,7 @@ local keymaps = {
   { "<leader>gbl", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
   { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
   { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
-  { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
-  { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
+  { "<leader>sw", function() Snacks.picker.grep_word({ cwd = project_root() }) end, desc = "Search word in project", mode = { "n", "x" } },
   { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
   { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
   { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
@@ -50,6 +60,14 @@ local keymaps = {
   { "<leader>.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
   { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
   { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
+  { "<leader>ob", function()
+      local path = vim.fn.expand("%:p")
+      if path == "" then
+        vim.notify("Current buffer has no file", vim.log.levels.WARN)
+        return
+      end
+      vim.ui.open(path)
+    end, desc = "Open Current File" },
   { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
   { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
   {

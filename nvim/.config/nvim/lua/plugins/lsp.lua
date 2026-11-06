@@ -2,6 +2,18 @@ vim.diagnostic.config({
   virtual_text = true,
 })
 
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Next diagnostic" })
+
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Previous diagnostic" })
+
+vim.keymap.set("n", "<leader>ld", function()
+  vim.diagnostic.open_float()
+end, { desc = "Line diagnostics" })
+
 vim.lsp.on_type_formatting.enable()
 
 vim.lsp.config("*", {
@@ -95,6 +107,6 @@ vim.lsp.config("helm_ls", {
   },
 })
 
-for _, server in ipairs({ "bashls", "dockerls", "helm_ls", "jsonls", "lua_ls", "pyright", "terraformls", "yamlls" }) do
+for _, server in ipairs({ "bashls", "dockerls", "helm_ls", "jsonls", "lua_ls", "pyright", "terraformls", "ts_ls", "yamlls" }) do
   vim.lsp.enable(server)
 end

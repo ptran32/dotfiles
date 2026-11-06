@@ -20,18 +20,18 @@ require("gitsigns").setup({
     local function map(mode, l, r, desc)
       vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
     end
-    map("n", "]c", function()
+    map("n", "]]", function()
       if vim.wo.diff then
-        return "]c"
+        return "]]"
       end
       vim.schedule(function()
         gs.next_hunk()
       end)
       return "<Ignore>"
     end, "Next git hunk")
-    map("n", "[c", function()
+    map("n", "[[", function()
       if vim.wo.diff then
-        return "[c"
+        return "[["
       end
       vim.schedule(function()
         gs.prev_hunk()

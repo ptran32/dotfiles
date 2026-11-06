@@ -43,10 +43,11 @@ return {
   { "qvalentin/helm-ls.nvim", config = config("helm-ls") },
   { "MagicDuck/grug-far.nvim", config = config("grug-far") },
   { "bennypowers/splitjoin.nvim", config = config("splitjoin") },
-  { "michaelb/sniprun", build = "bash ./install.sh", config = config("sniprun") },
   { "nvzone/volt" },
   { "gisketch/triforce.nvim", dependencies = { "nvzone/volt" }, config = config("triforce") },
   { "CRAG666/code_runner.nvim", config = config("code_runner") },
   { "esmuellert/codediff.nvim", config = config("codediff") },
-  { "NeogitOrg/neogit", dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "esmuellert/codediff.nvim" }, config = config("neogit") },
+  { "CoreyKaylor/diffbandit.nvim", config = config("diffbandit") },
+  { "NeogitOrg/neogit", dependencies = { "nvim-lua/plenary.nvim", "esmuellert/codediff.nvim" }, config = config("neogit") },
+  { "mikavilpas/yazi.nvim", config = config("yazi") },
 }
